@@ -1,0 +1,48 @@
+Tristin Rybak
+DATABASE THEORY
+OUTER JOIN
+
+1.	SELECT * FROM Table1 NATURAL JOIN Table2;
+
+	A 	B 	D 	E 	C 	F
+	
+	1 	2  	3 	4 	2 	5
+	2	1 	5 	3 	5 	4 
+
+2.	SELECT * FROM Table1 NATURAL LEFT JOIN Table2;
+
+	A 	B 	D 	E 	C 	F
+	
+	1 	2  	3 	4 	2 	5
+	2	1 	5 	3 	5 	4 
+	3 	2 	1 	1 	N 	N 
+
+
+3.	SELECT * FROM Table1 NATURAL RIGHT JOIN Table2;
+
+	A 	B 	D 	E 	C 	F
+	
+	1 	2  	3 	4 	2 	5
+	2	1 	5 	3 	5 	4 
+	N 	1 	N 	3 	2 	4 
+	N 	2 	N 	4 	2 	5 
+	N 	3 	N 	1 	1 	1 	
+
+
+4.	SELECT * FROM Table1 NATURAL FULL JOIN Table2;
+
+	A 	B 	D 	E 	C 	F
+	
+	1 	2  	3 	4 	2 	5
+	2	1 	5 	3 	5 	4 
+	3 	2 	1 	1 	N 	N 
+	N 	1 	N 	3 	2 	4 
+	N 	2 	N 	4 	2 	5 
+	N 	3 	N 	1 	1 	1 
+
+5.	SELECT * FROM Table1 RIGHT JOIN Table2 ON (A > F AND Table1.E > Table2.E)
+	A 	Table1.B 	D 	Table1.E 	Table2.B 	C 	Table2.E 	F
+	
+	2 	1 		5 	3 		3 		1 	1 		1
+	N 	N 		N 	N 		1 		2 	3 		4
+	N 	N 		N 	N 		2 		2 	4 		5

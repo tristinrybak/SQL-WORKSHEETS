@@ -1,0 +1,56 @@
+1.	Find all distinct instructor names and label the output as 
+	“Instructor Name”, displaying in the alphabetical order.
+	
+SELECT DISTINCT name AS "Instructor Name"
+FROM instructor
+ORDER BY name
+
+2.	Find all names of computer science student, displaying in the alphabetical order.
+
+SELECT name
+FROM student
+WHERE dept_name='Comp. Sci.'
+ORDER BY name
+
+3.	Find all course id and title of those courses offered by computer science department.
+
+SELECT course_id, title
+FROM course
+WHERE dept_name='Comp. Sci.'
+ 
+4.	Find all distinct salaries of computer science instructors,
+	displaying from the highest to the lowest.
+	
+SELECT DISTINCT salary
+FROM instructor
+ORDER BY salary DESC	
+	
+5.	Find all instructors whose name starts with letter A and contains at least 6 characters. 
+
+SELECT ID, name
+FROM instructor
+WHERE name LIKE 'A%' AND LENGTH(name) > 5
+
+6.	Find the highest salary among all instructors.
+
+SELECT MAX(salary)
+FROM instructor
+
+7.	Find all instructors whose salary is the highest among all instructors.
+
+SELECT ID,name
+FROM instructor
+WHERE salary = (SELECT MAX(salary) FROM instructor)
+
+8.	Find the average salary among all computer science instructors.
+
+SELECT AVG(salary) AS "Average Salary"
+FROM instructor
+WHERE dept_name = 'Comp. Sci.'
+
+9.	Find all computer science instructors whose salary is higher than 
+	the average salary among all Finance instructors.
+
+SELECT ID,name
+FROM instructor
+WHERE dept_name = 'Comp. Sci.' AND salary > (SELECT AVG(salary) FROM instructor WHERE dept_name = 'Finance')

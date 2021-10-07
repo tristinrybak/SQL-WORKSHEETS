@@ -1,0 +1,27 @@
+scic Insert
+
+Submit a text file containing SQL insert 
+statements for some tables of the scic application.
+
+Insert one record into the following tables:
+driver
+customer
+a car owned by the customer
+a credit card of the customer
+a policy covers the car
+-------------------------------------------------------------------------------------------
+
+INSERT INTO driver (ssn, license, fname, lname, mi, gender, dob)
+VALUES ('498456686', 'FMNA6759C7', 'Tom', 'Cruise', 'D', 'Male', '04/10/2001");
+
+INSERT INTO Customer (id, email, address, street1, street2, apt_num, city, state, zip)
+VALUES ('123', 'tdc@yahoo.com', '716', 'Stavanger', '---', '2', 'Warrensburg', 'Missouri', '64093');
+
+INSERT INTO car(vin, license_num, license_state, year, maker, model, color, mileage)
+VALUES ('nbkzdbfkwb1251465','1315135136515','Missouri','2020','Chevy','F150','Blue','150000');
+
+INSERT INTO credit_card(card_num, expiration_date, csv_num, card_type, status)
+VALUES ('1234543212345698','04/10/2022','212','visa','active');
+
+INSERT INTO policy(id, name, description, premium, start_date, end_date, status)
+VALUES ('123','Tom','Full Coverage','2000','04/10/2020',''04/11/2022', 'active');

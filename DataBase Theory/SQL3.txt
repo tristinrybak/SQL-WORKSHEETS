@@ -1,0 +1,176 @@
+Tristin Rybak - SQL3
+
+SQL query exercises:
+
+Consider the Drivers-Cars-Reserves DB for a small rental car company:
+	Drivers(id, name, rating, age)
+	Cars(vin, maker, model, year, color)
+	Reserves(did, vin, date)
+
+1.	Give SQL statement each of the following operations:
+
+a.	Find the colors of cars reserved by Smith.
+
+SELECT color
+FROM Drivers, Cars, Reserves
+WHERE Reserves.did=Drivers.id AND Reserves.vin=Cars.vin AND Drivers.name='Smith'
+
+b.	Find all id’s of drivers who have a rating of at least 7 or reserved car with VIN:1HGCM82633A004352	
+
+(SELECT id
+FROM Drivers
+WHERE rating>=7)
+UNION
+(SELECT id
+FROM Reserves
+WHERE vin=1HGCM82633A004352)
+
+c.	Find the names of drivers who have not reserved a red car.
+
+SELECT driver.name
+FROM driver, reserves
+WHERE id = did name NOT IN (SELECT s.name
+		            FROM cars, reserves
+		            WHERE cars.vin = reserves.vin and cars.color=’red’);
+
+d.	Find the names of drivers who have reserved at least two cars.
+
+SELECT DISTINCT driver.name 
+FROM driver, reserves r1, reserves r2 
+WHERE id=r1.did AND id=r2.did AND r1.bid<r2.bid
+
+e.	Find the driver id’s of all drivers whose rating is better than some driver called Bob.
+
+SELECT id
+FROM Drivers
+WHERE rating>= ANY (SELECT rating
+		   FROM Drivers
+		   WHERE name = 'Bob')
+		   
+f.	Find the driver id’s of all drivers whose rating is better than every driver called Bob. 
+
+SELECT id
+FROM Drivers
+WHERE rating>= ALL (SELECT rating
+		   FROM Drivers
+		   WHERE name = 'Bob')
+		   
+g.	Find the driver id’s of all drivers with the highest rating.
+
+SELECT id
+FROM Drivers as D1
+WHERE D1.rating >= ALL (SELECT rating
+ 			  FROM Drivers)
+
+h.	Find the names of drivers who have reserved all cars.	
+
+SELECT name
+FROM Drivers
+WHERE NOT EXISTS (SELECT *
+   		FROM Cars
+ WHERE NOT EXISTS (SELECT *
+                                      FROM Reserves
+ 		         WHERE Reserves.did=Drivers.id AND Reserves.vin=Cars.vin));
+
+
+2.	(Subqueries, Join operations) Write the following queries in SQL:
+
+a.	Find the makers of PC’s with a speed of at least 1200.
+
+SELECT maker
+FROM Product
+WHERE model = ANY(SELECT model 
+ FROM PC 
+WHERE speed >= 1200)
+
+b.	Find the printers with the highest price.
+
+SELECT model
+FROM Printer
+WHERE price >= ALL(SELECT price 
+      FROM Printer)
+	  
+c.	Find the laptops whose speed is lower than that of any PC.
+
+SELECT model
+FROM Laptop
+WHERE speed <ANY(SELECT speed 
+FROM PC)
+
+d.	Find the model number of the item (PC, laptop, or printer) with the highest price.
+
+SELECT  model 
+FROM (SELECT  model, price 
+             FROM PC
+              WHERE price = (SELECT MAX(price) 
+                     		FROM pc)
+      UNION
+      SELECT  model,  price 
+      FROM Laptop
+      WHERE price = (SELECT MAX(price) 
+                     	    FROM Laptop)
+      UNION
+      SELECT  model,  price 
+      FROM Printer
+      WHERE price = (SELECT MAX(price) 
+                     	     FROM Printer)
+							 
+e.	Find the maker of the color printer with the lowest price.
+
+SELECT maker
+FROM Product,printer
+WHERE printer.model = product.model and printer.price<=ALL(SELECT MIN(price)
+								FROM printer)
+								
+f.	Find the maker(s) of the PC(s) with the fastest processor among all those PC’s that have the smallest amount of RAM.
+
+SELECT DISTINCT maker 
+FROM Product, PC 
+WHERE Product.model=PC.model And Ram <= ALL (SELECT ram from PC) And Speed >= ALL (SELCT speed FROM PC WHERE ram=(SELECT min(ram) FROM PC));
+
+
+3.	(Grouping and Aggregation) Write the following queries in SQL:
+
+a.	Find the average speed of laptops costing over $2000.
+
+SELECT AVG(speed)
+FROM laptop
+WHERE price > 2000
+
+b.	Find the average price of PC’s and laptops made by manufacturer “D”.
+
+SELECT AVG(price)
+FROM laptop, pc, product
+WHERE maker=’D’ and product.model=laptop.model and product.model=pc.model
+
+c.	Find, for each manufacturer, the average screen size of its laptops.
+
+SELECT AVG(laptop.screen), DISTINCT product.maker
+FROM laptop, product
+WHERE product.model = laptop.model
+
+d.	Find the manufacturers that make at least three different models of PC.
+
+SELECT product.maker
+FROM pc, product
+WHERE pc.model=product.model
+
+e.	Find, for each manufacturer who sells PC’s, the maximum price of a PC.
+
+SELECT pc.price
+FROM pc,product
+WHERE	 pc.model =product.model AND pc.price >=(SELECT price
+						      FROM pc)
+							  
+f.	Find, for each speed of PC above 800, the average price.
+
+SELECT AVG(price)
+FROM pc
+WHERE speed > 800
+
+g.	Find the average hard-disk size of a PC for all those manufacturers that make printers.
+
+SELECT AVG(hd)
+FROM product, (SELECT maker
+		FROM product.type = ‘printer’)as k
+WHERE product.maker=k.maker AND product.model=pc.model

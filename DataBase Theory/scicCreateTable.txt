@@ -1,0 +1,141 @@
+scicCreateTable
+
+Submit a text file containing SQL create table 
+statements based on the schema for the scic database.
+
+Make sure to define primary key and foreign key 
+constraints in the create table statements.
+
+9 entity set tables, 6 relational tables, 1 multivalued attribute table
+-----------------------------------------------------------------------
+
+CREATE TABLE [IF NOT EXISTS] driver(
+   'ssn' int,
+   'license' text,
+   'fname' text,
+   'lname' text,
+   'mi' text,
+   'gender' text,
+   'dob' date,
+   PRIMARY KEY ('ssn')
+) ENGINE = scic;
+
+CREATE TABLE [IF NOT EXISTS] accident(
+   'id' smallint not NULL AUTO_INCREMENT,
+   'date' date,
+   'time' time,
+   'type' text,
+   'police_report_no' int,
+   'description' text,
+   PRIMARY KEY ('id')
+) ENGINE = scic;
+
+CREATE TABLE [IF NOT EXISTS] customer(
+   'id' smallint not NULL AUTO_INCREMENT,
+   'email' text,
+   'address' text,
+   'street1' text,
+   'street2' text,
+   'apt_num' int,
+   'city' text,
+   'state' text,
+   'zip' int,
+   PRIMARY KEY ('id')
+) ENGINE = scic;
+
+CREATE TABLE [IF NOT EXISTS] policy(
+   'id' smallint not NULL AUTO_INCREMENT,
+   'name' text,
+   'description' text,
+   'premium' varchar(255),
+   'start_date' date,
+   'end_date' date,
+   'status' text,
+   PRIMARY KEY ('id')
+) ENGINE = scic;
+
+CREATE TABLE [IF NOT EXISTS] car(
+   'vin' varchar(255),
+   'license_num' int,
+   'license_state' text,
+   'year' year,
+   'maker' text,
+   'model' text,
+   'color' text,
+   'mileage' int,
+   PRIMARY KEY ('vin')
+) ENGINE = scic;
+
+CREATE TABLE [IF NOT EXISTS] account(
+   'id' smallint not NULL AUTO_INCREMENT,
+   'type' text,
+   'status' text,
+   'bank_name' text,
+   PRIMARY KEY ('id')
+) ENGINE = scic;
+
+CREATE TABLE [IF NOT EXISTS] bank_acct(
+   'acct_num' INT,
+   'routine_num' varchar(255),
+   'status' text,
+) ENGINE = scic;
+
+CREATE TABLE [IF NOT EXISTS] credit_card(
+   'card_num' varchar(16),
+   'expiration_date' date,
+   'csv_num' char(3),
+   'card_type' text,
+   'status' text
+) ENGINE = scic;
+
+CREATE TABLE [IF NOT EXISTS] payment_invoice(
+   'id' smallint not NULL AUTO_INCREMENT,
+   'date_issued' date,
+   'amount' int,
+   'type' text,
+   'note' text
+   PRIMARY KEY ('id')
+) ENGINE = scic;
+
+CREATE TABLE [IF NOT EXISTS] cust_acct(
+   'id' smallint not NULL AUTO_INCREMENT,
+   PRIMARY KEY ('id')
+) ENGINE = scic;
+
+CREATE TABLE [IF NOT EXISTS] dri_acci(
+   'id' smallint not NULL AUTO_INCREMENT,
+   'ssn' int,
+   PRIMARY KEY ('id'),
+   PRIMARY KEY ('ssn')
+) ENGINE = scic;
+
+CREATE TABLE [IF NOT EXISTS] acci_car(
+   'id' smallint not NULL AUTO_INCREMENT,
+   'vin' varchar(),
+   PRIMARY KEY ('id')
+) ENGINE = scic;
+
+CREATE TABLE [IF NOT EXISTS] p_car(
+   'id' smallint not NULL AUTO_INCREMENT,
+   'vin' varchar(),
+   PRIMARY KEY ('id')
+) ENGINE = scic;
+
+CREATE TABLE [IF NOT EXISTS] cus_p(
+   'id' smallint not NULL AUTO_INCREMENT,
+   PRIMARY KEY ('id')
+) ENGINE = scic;
+
+CREATE TABLE [IF NOT EXISTS] acct_pay(
+   'id' smallint not NULL AUTO_INCREMENT,
+   'date' date,
+   'amount' int,
+   'ck_conf_num' int,
+   PRIMARY KEY ('id')
+) ENGINE = scic;
+
+CREATE TABLE [IF NOT EXISTS] phone(
+   'area_code' char(3),
+   'phone_num' char(6),
+   'type' text
+) ENGINE = scic;

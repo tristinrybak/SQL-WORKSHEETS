@@ -1,0 +1,80 @@
+1.	For each department, find the maximum salary of instructors in that department.
+	You may assume that every department has at least on instructor. (group by)
+
+SELECT   sept_name, MAX(salary)
+FROM     instructor
+GROUP BY dept_name
+
+2.	Find the lowest, across all departments, of the per-department maximum salary computed by the preceding query.
+ (use a subquery in FROM clause, will be covered soon)
+ 
+SELECT MIN(MAX(salary))
+FROM (SELECT   dept_name, MAX(salary)
+     FROM     instructor
+     GROUP BY dept_name) as min_salary
+ 
+ 
+3.	Find the number of students in each section that was offered in Fall 2009. 
+
+SELECT course_id, sec_id, COUNT(ID) as Num_of_Students
+FROM section NATURAL JOIN takes
+WHERE semester = 'Fall'
+AND year = 2009
+GROUP BY course_id, sec_id
+
+4.	Find the maximum enrollment, across all sections, in Fall 2009. 
+(use a subquery in FROM clause, will be covered soon)
+
+SELECT Max(Num_of_Students)
+FROM (SELECT COURSE_ID, SEC_ID, COUNT(ID) as Num_of_Students
+	FROM section NATURAL JOIN takes
+	WHERE semester = 'Fall'
+	AND year = 2009
+	GROUP BY course_id, sec_id) as Class_ENROLLMENT
+
+5.	Find the sections (i.e. course_id and section_id)
+that had the maximum enrollment in Fall 2009.
+
+SELECT course_id, sec_id
+FROM (SELECT course_id, sec_id, COUNT(ID) as Num_of_Students
+	FROM section NATURAL JOIN takes
+	WHERE semester = 'Fall'
+	AND year = 2009
+	GROUP BY course_id, sec_id) as Class_ENROLLMENT
+WHERE num_of_students=(SELECT max(num_of_students))
+(Use set operation EXCEPT, INTERSECT or use subqueries)
+
+6.	Find the IDs and names of all students who have not taken any course offering before Spring 2009.
+
+SELECT ID, NAME
+FROM student
+Except(SELECT id, name
+	   FROM student NATURAL JOIN takes
+	   WHERE year<2009)
+
+7.	Find the IDs and names of all students who have taken a computer science course and a biology course.
+
+SELECT ID, NAME
+FROM student
+WHERE(SELECT id, name
+	   FROM student NATURAL JOIN takes
+	   WHERE course.dept_name = 'Comp. Sci.' AND course.dept_name = 'Biology.')
+
+
+(Join tables using WHERE condition or NATURAL JOIN)
+
+8.	Find the IDs of all students who had an instructor named Sullivan;
+make sure there are no duplicates in the result. (join multiple tables)
+
+SELECT DISTINCT student.ID
+FROM(student JOIN takes USING(ID))
+JOIN(instructor JOIN teaches USING(ID))
+USING(course_id,sec_id,semester,year)
+WHERE instructor.name = 'Sullivan';
+
+9.	Find the names of all students who have taken at least one Comp. Sci. course;
+make sure there are no duplicates in the result. (join multiple tables)
+
+SELECT DISTINCT name
+FROM student NATURAL JOIN takes NATURAL JOIN course
+WHERE course.dept_name = 'Comp. Sci.'
